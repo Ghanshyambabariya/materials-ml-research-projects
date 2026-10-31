@@ -4,73 +4,73 @@
   "features": 150,
   "tools": 13,
   "development_groups": [
-    "10",
     "11",
+    "12",
+    "13",
     "14",
+    "15",
     "16",
-    "4",
-    "5",
+    "3",
     "6",
-    "7",
     "9"
   ],
   "validation_groups": [
-    "11",
-    "14",
-    "16"
+    "3",
+    "6",
+    "9"
   ],
   "test_groups": [
-    "12",
-    "13",
-    "15",
-    "3"
+    "10",
+    "4",
+    "5",
+    "7"
   ],
   "validation_models": {
     "rf_300_baseline": {
-      "mae": 31.01858,
-      "rmse": 42.69894,
-      "r2": 0.89922,
-      "fit_seconds": 4.0306,
-      "predict_seconds": 0.0566
+      "mae": 38.01772,
+      "rmse": 46.04881,
+      "r2": 0.5581,
+      "fit_seconds": 5.2426,
+      "predict_seconds": 0.0669
     },
     "rf_100": {
-      "mae": 31.09329,
-      "rmse": 42.63419,
-      "r2": 0.89952,
-      "fit_seconds": 1.3541,
-      "predict_seconds": 0.0254
+      "mae": 37.16765,
+      "rmse": 45.21943,
+      "r2": 0.57387,
+      "fit_seconds": 1.7632,
+      "predict_seconds": 0.0258
     },
     "extra_trees_160": {
-      "mae": 21.75561,
-      "rmse": 27.89159,
-      "r2": 0.957,
-      "fit_seconds": 0.5955,
-      "predict_seconds": 0.0365
+      "mae": 33.27413,
+      "rmse": 41.48733,
+      "r2": 0.64131,
+      "fit_seconds": 0.7872,
+      "predict_seconds": 0.0362
     },
     "hist_gradient_boosting": {
-      "mae": 23.43157,
-      "rmse": 32.54423,
-      "r2": 0.94145,
-      "fit_seconds": 0.8486,
-      "predict_seconds": 0.0066
+      "mae": 28.75233,
+      "rmse": 35.41728,
+      "r2": 0.73859,
+      "fit_seconds": 1.0817,
+      "predict_seconds": 0.006
     }
   },
   "selected_using_validation_only": "extra_trees_160",
   "test_baseline": {
-    "mae": 29.5957,
-    "rmse": 37.23657,
-    "r2": 0.75847,
-    "fit_seconds": 6.6233,
-    "predict_seconds": 0.0468
+    "mae": 33.57202,
+    "rmse": 51.55741,
+    "r2": 0.86554,
+    "fit_seconds": 8.1085,
+    "predict_seconds": 0.0777
   },
   "test_selected": {
-    "mae": 30.56995,
-    "rmse": 38.51576,
-    "r2": 0.74159,
-    "fit_seconds": 0.9541,
-    "predict_seconds": 0.0359
+    "mae": 32.12147,
+    "rmse": 50.74634,
+    "r2": 0.86974,
+    "fit_seconds": 1.1297,
+    "predict_seconds": 0.0471
   },
-  "fit_speedup": 6.942,
+  "fit_speedup": 7.178,
   "accuracy_goal_met": true,
   "training_speed_goal_met": true,
   "note": "Training times depend on hardware. No improvement to machine productivity was measured."
