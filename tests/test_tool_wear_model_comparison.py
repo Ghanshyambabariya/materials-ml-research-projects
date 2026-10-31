@@ -26,3 +26,11 @@ def test_model_selection_and_report(tmp_path):
     assert set(report["validation_groups"]).issubset(report["development_groups"])
     CODE["write_report"](report, tmp_path / "output")
     assert (tmp_path / "output" / "model_comparison.md").is_file()
+
+
+def test_string_tool_ids_reproduce_original_holdout():
+    # Vicomtech uses these 13 tool IDs; string ordering matters for the split.
+    tool_ids = ["3", "4", "5", "6", "7", "9", "10", "11", "12", "13", "14", "15", "16"]
+    frame = pd.DataFrame({"tool": tool_ids, "Vb": range(len(tool_ids))})
+    _, held_out = CODE["group_split"](frame, 0.30, 42)
+    assert set(frame.iloc[held_out]["tool"]) == {"10", "4", "5", "7"}

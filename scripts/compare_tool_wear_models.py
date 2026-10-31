@@ -61,7 +61,9 @@ def run(data_path):
     frame = pd.read_csv(data_path)
     if not {"tool", "Vb"}.issubset(frame.columns):
         raise ValueError("Cleaned Vicomtech CSV must contain tool and Vb")
-    frame = frame.dropna(subset=["tool", "Vb"])
+    frame = frame.dropna(subset=["tool", "Vb"]).copy()
+    # Match the original benchmark protocol: tool identifiers are strings.
+    frame["tool"] = frame["tool"].astype("int64").astype(str)
     features = [col for col in frame.select_dtypes(include="number").columns
                 if col not in {"tool", "Vb", "wear_stage"}]
     if not features:

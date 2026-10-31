@@ -6,7 +6,7 @@ Reduce model fitting time while keeping held-out-tool prediction RMSE within 5% 
 ## Evidence already in this repository
 - Public Vicomtech dataset: 2,054 cleaned rows, 13 independent tools, 150 features.
 - Original grouped test: Random Forest RMSE 51.0834, R² 0.8680, MAE 33.4742.
-- Baseline is from the existing tool-wear benchmark. The new comparison reproduces and times the baseline on the same runner as three alternatives.
+- Baseline is from the existing tool-wear benchmark. The new comparison uses the original string-form tool IDs and split seed, then measures the baseline and three alternatives on the same runner.
 
 ## Experiment
 1. Split whole tools (not rows) into development and test groups using seed 42.
