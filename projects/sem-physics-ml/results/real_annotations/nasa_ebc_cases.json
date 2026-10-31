@@ -1,0 +1,269 @@
+{
+  "source": "NASA pretrained-microscopy-models, public test annotations",
+  "uses_real_sem_annotation_geometry": true,
+  "uses_trained_sem_unet": false,
+  "uses_experimental_thermal_properties": false,
+  "cases": [
+    {
+      "dataset": "EBC1",
+      "annotation_url": "https://github.com/nasa/pretrained-microscopy-models/blob/main/benchmark_segmentation_data/EBC1/test_annot/040617%232_S127%282%290015.tif",
+      "annotation_sha256": "d33f2c0a062e59ccbee3fda8ee3e91e23c59364d32bb5c4040d195c211bba419",
+      "annotation_size": [
+        1024,
+        1024
+      ],
+      "original_class_pixels": {
+        "0": 890517,
+        "1": 154269,
+        "2": 3790
+      },
+      "downsample_audit": {
+        "original_size": [
+          1024,
+          1024
+        ],
+        "resized_size": [
+          24,
+          24
+        ],
+        "before": {
+          "0": 0.8492631912231445,
+          "1": 0.14712238311767578,
+          "2": 0.0036144256591796875
+        },
+        "after": {
+          "0": 0.8506944444444444,
+          "1": 0.1423611111111111,
+          "2": 0.006944444444444444
+        },
+        "crack_abs_fraction_change": 0.0033300187852647566,
+        "crack_lost_entirely": false
+      },
+      "modeled_y_transport_sensitivity": {
+        "low_contrast": {
+          "relative_k": [
+            1.0,
+            0.75,
+            0.12
+          ],
+          "modeled_conductivity_proxy": 0.9430534549165072,
+          "conservation": {
+            "node_flux_residual_rmse": 3.0334374679746807e-16,
+            "incoming_heat_flux": 0.9563358979435002,
+            "outgoing_heat_flux": 0.9563358979433811,
+            "flux_balance_relative_error": 1.244499014370871e-13
+          }
+        },
+        "medium_contrast": {
+          "relative_k": [
+            1.0,
+            0.4,
+            0.05
+          ],
+          "modeled_conductivity_proxy": 0.8055648433960537,
+          "conservation": {
+            "node_flux_residual_rmse": 3.2859154290308253e-16,
+            "incoming_heat_flux": 0.8169108271058573,
+            "outgoing_heat_flux": 0.8169108271057395,
+            "flux_balance_relative_error": 1.441952524121277e-13
+          }
+        },
+        "high_contrast": {
+          "relative_k": [
+            1.0,
+            0.15,
+            0.015
+          ],
+          "modeled_conductivity_proxy": 0.5347334307452872,
+          "conservation": {
+            "node_flux_residual_rmse": 3.6470657525000204e-16,
+            "incoming_heat_flux": 0.5422648875163476,
+            "outgoing_heat_flux": 0.5422648875162325,
+            "flux_balance_relative_error": 2.1231344736507195e-13
+          }
+        }
+      },
+      "synthetic_model_transfer": {
+        "temperature_mae_vs_fvm": 0.03581334756654423,
+        "proxy_relative_error": 0.502408605038977,
+        "proxy_fvm": 0.7882634145212517,
+        "proxy_cnn": 1.1842937370141347
+      },
+      "limitations": "Real SEM annotation geometry with assumed k and 24px resizing; no original trained segmentation U-Net."
+    },
+    {
+      "dataset": "EBC2",
+      "annotation_url": "https://github.com/nasa/pretrained-microscopy-models/blob/main/benchmark_segmentation_data/EBC2/test_annot/050317%233_S0440016.tif",
+      "annotation_sha256": "56f47cdcc2f8f710ac1390a38f1a4d1b2e888c799eba4f4766765cf07d63461e",
+      "annotation_size": [
+        1024,
+        1024
+      ],
+      "original_class_pixels": {
+        "0": 839148,
+        "1": 207196,
+        "2": 2232
+      },
+      "downsample_audit": {
+        "original_size": [
+          1024,
+          1024
+        ],
+        "resized_size": [
+          24,
+          24
+        ],
+        "before": {
+          "0": 0.8002738952636719,
+          "1": 0.19759750366210938,
+          "2": 0.00212860107421875
+        },
+        "after": {
+          "0": 0.7986111111111112,
+          "1": 0.2013888888888889,
+          "2": 0.0
+        },
+        "crack_abs_fraction_change": 0.00212860107421875,
+        "crack_lost_entirely": true
+      },
+      "modeled_y_transport_sensitivity": {
+        "low_contrast": {
+          "relative_k": [
+            1.0,
+            0.75,
+            0.12
+          ],
+          "modeled_conductivity_proxy": 0.9298330621161724,
+          "conservation": {
+            "node_flux_residual_rmse": 3.007396626910426e-16,
+            "incoming_heat_flux": 0.9429293024276678,
+            "outgoing_heat_flux": 0.942929302427555,
+            "flux_balance_relative_error": 1.1962578637815607e-13
+          }
+        },
+        "medium_contrast": {
+          "relative_k": [
+            1.0,
+            0.4,
+            0.05
+          ],
+          "modeled_conductivity_proxy": 0.7605814667656188,
+          "conservation": {
+            "node_flux_residual_rmse": 3.084826747014691e-16,
+            "incoming_heat_flux": 0.7712938817904866,
+            "outgoing_heat_flux": 0.7712938817903532,
+            "flux_balance_relative_error": 1.730194037714326e-13
+          }
+        },
+        "high_contrast": {
+          "relative_k": [
+            1.0,
+            0.15,
+            0.015
+          ],
+          "modeled_conductivity_proxy": 0.4643256035410223,
+          "conservation": {
+            "node_flux_residual_rmse": 3.2140556121153967e-16,
+            "incoming_heat_flux": 0.4708654007739944,
+            "outgoing_heat_flux": 0.47086540077387434,
+            "flux_balance_relative_error": 2.5499987876756753e-13
+          }
+        }
+      },
+      "synthetic_model_transfer": {
+        "temperature_mae_vs_fvm": 0.021399804483127418,
+        "proxy_relative_error": 0.29836951046304855,
+        "proxy_fvm": 0.7632962224816148,
+        "proxy_cnn": 0.9910405427217484
+      },
+      "limitations": "Real SEM annotation geometry with assumed k and 24px resizing; no original trained segmentation U-Net."
+    },
+    {
+      "dataset": "EBC3",
+      "annotation_url": "https://github.com/nasa/pretrained-microscopy-models/blob/main/benchmark_segmentation_data/EBC3/test_annot/050317%233_S0440017.tif",
+      "annotation_sha256": "dc2933de6fd0013f02adff13c61ff90ac4f5ea57fd3bd80cb30d2a5311208c8c",
+      "annotation_size": [
+        1024,
+        1024
+      ],
+      "original_class_pixels": {
+        "0": 833938,
+        "1": 211962,
+        "2": 2676
+      },
+      "downsample_audit": {
+        "original_size": [
+          1024,
+          1024
+        ],
+        "resized_size": [
+          24,
+          24
+        ],
+        "before": {
+          "0": 0.7953052520751953,
+          "1": 0.20214271545410156,
+          "2": 0.002552032470703125
+        },
+        "after": {
+          "0": 0.7934027777777778,
+          "1": 0.2013888888888889,
+          "2": 0.005208333333333333
+        },
+        "crack_abs_fraction_change": 0.002656300862630208,
+        "crack_lost_entirely": false
+      },
+      "modeled_y_transport_sensitivity": {
+        "low_contrast": {
+          "relative_k": [
+            1.0,
+            0.75,
+            0.12
+          ],
+          "modeled_conductivity_proxy": 0.9313988200974591,
+          "conservation": {
+            "node_flux_residual_rmse": 3.014037463130752e-16,
+            "incoming_heat_flux": 0.9445171133382684,
+            "outgoing_heat_flux": 0.944517113338165,
+            "flux_balance_relative_error": 1.0943344713711312e-13
+          }
+        },
+        "medium_contrast": {
+          "relative_k": [
+            1.0,
+            0.4,
+            0.05
+          ],
+          "modeled_conductivity_proxy": 0.7599549548829487,
+          "conservation": {
+            "node_flux_residual_rmse": 3.0548289420279793e-16,
+            "incoming_heat_flux": 0.770658545796793,
+            "outgoing_heat_flux": 0.7706585457966844,
+            "flux_balance_relative_error": 1.4103630551248358e-13
+          }
+        },
+        "high_contrast": {
+          "relative_k": [
+            1.0,
+            0.15,
+            0.015
+          ],
+          "modeled_conductivity_proxy": 0.46113443860613396,
+          "conservation": {
+            "node_flux_residual_rmse": 3.1133508078938253e-16,
+            "incoming_heat_flux": 0.4676292898541077,
+            "outgoing_heat_flux": 0.467629289854003,
+            "flux_balance_relative_error": 2.2388253578986682e-13
+          }
+        }
+      },
+      "synthetic_model_transfer": {
+        "temperature_mae_vs_fvm": 0.021341952166056794,
+        "proxy_relative_error": 0.1894783756100238,
+        "proxy_fvm": 0.746746064599291,
+        "proxy_cnn": 0.8882382959127426
+      },
+      "limitations": "Real SEM annotation geometry with assumed k and 24px resizing; no original trained segmentation U-Net."
+    }
+  ]
+}
