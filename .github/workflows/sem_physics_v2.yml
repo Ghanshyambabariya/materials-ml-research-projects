@@ -1,0 +1,52 @@
+name: SEM physics scientific validation
+on:
+  push:
+    paths:
+      - 'projects/sem-physics-ml/*.py'
+      - 'tests/test_sem_methods.py'
+      - 'tests/test_sem_validate.py'
+      - 'tests/test_sem_nasa_cases.py'
+      - '.github/workflows/sem_physics_v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  model-and-annotation-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scientific dependencies
+        run: python -m pip install -r projects/sem-physics-ml/requirements.txt
+      - name: Check numerical solver and SEM mask processing
+        run: python -m pytest -q tests/test_sem_methods.py tests/test_sem_validate.py tests/test_sem_nasa_cases.py tests/test_sem_physics_ml.py
+      - name: Compare three model losses across seeds
+        run: python projects/sem-physics-ml/benchmark_v2.py --epochs 65 --seeds 5 17 29
+      - name: Verify generated surrogate checkpoint and inference adapter
+        run: python -m pytest -q tests/test_sem_methods.py tests/test_sem_validate.py tests/test_sem_nasa_cases.py tests/test_sem_physics_ml.py
+      - name: Record numerical benchmark independently of network download
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add projects/sem-physics-ml/results/v2/benchmark.json projects/sem-physics-ml/results/v2/benchmark.md projects/sem-physics-ml/results/v2/*.png projects/sem-physics-ml/results/v2/transport_cnn_variable_k.pt
+          git diff --cached --quiet || (git commit -m "Record repeatable SEM transport ablation" && git push)
+      - name: Evaluate real NASA EBC test annotations
+        run: python projects/sem-physics-ml/run_nasa_cases.py
+      - name: Preserve numerical and real-annotation reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: sem-physics-validation
+          path: |
+            projects/sem-physics-ml/results/v2/benchmark.*
+            projects/sem-physics-ml/results/v2/*.png
+            projects/sem-physics-ml/results/v2/*.pt
+            projects/sem-physics-ml/results/real_annotations/*.json
+            projects/sem-physics-ml/results/real_annotations/*.md
+      - name: Record NASA annotation transfer report
+        run: |
+          git add projects/sem-physics-ml/results/real_annotations/nasa_ebc_cases.json projects/sem-physics-ml/results/real_annotations/nasa_ebc_cases.md
+          git diff --cached --quiet || (git commit -m "Record NASA EBC mask transport checks" && git push)
