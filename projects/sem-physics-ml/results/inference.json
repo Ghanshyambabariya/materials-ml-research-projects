@@ -1,0 +1,24 @@
+{
+  "source": "user-provided SEM image/checkpoint or class mask (see input_type)",
+  "mask_resolution": [
+    24,
+    24
+  ],
+  "phase_area_fractions": {
+    "0": 0.743056,
+    "1": 0.184028,
+    "2": 0.072917
+  },
+  "assumed_relative_conductivities": [
+    1.0,
+    0.4,
+    0.05
+  ],
+  "piml_conductivity_proxy": 0.80574,
+  "numerical_reference_conductivity_proxy": 0.762463,
+  "piml_vs_reference_temperature_mae": 0.007452,
+  "pde_residual_rmse": 0.007313,
+  "warning": "2-D simulated heat transport with assumed conductivity values; not measured material properties. Check orientation, segmentation error and grid coarsening.",
+  "input_type": "demo",
+  "input_path": "synthetic phase map"
+}

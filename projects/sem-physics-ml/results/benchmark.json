@@ -1,0 +1,89 @@
+{
+  "dataset_type": "synthetic 3-class masks; not measured SEM images",
+  "n_train": 64,
+  "n_val": 16,
+  "n_test": 20,
+  "mask_shape": [
+    24,
+    24
+  ],
+  "seed": 17,
+  "epochs": 160,
+  "network_width": 24,
+  "phase_labels": {
+    "0": "background",
+    "1": "oxide",
+    "2": "crack"
+  },
+  "assumed_relative_conductivities": [
+    1.0,
+    0.4,
+    0.05
+  ],
+  "equation": "div(k grad T)=0",
+  "boundary_conditions": "left=1, right=0, top/bottom insulated",
+  "linear_profile_baseline": {
+    "temperature_mae": 0.032434,
+    "pde_residual_rmse": 0.006894
+  },
+  "models": {
+    "cnn_data_only": {
+      "physics_residual_weight": 0.0,
+      "train_seconds": 9.519,
+      "test": {
+        "temperature_mae": 0.008196,
+        "pde_residual_rmse": 0.012433,
+        "mean_relative_effective_conductivity_error": 0.0727,
+        "temperature_bounds_violation_rate": 0.0
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "validation_mse": 0.002141
+        },
+        {
+          "epoch": 40,
+          "validation_mse": 0.0003197
+        },
+        {
+          "epoch": 80,
+          "validation_mse": 0.0002463
+        },
+        {
+          "epoch": 160,
+          "validation_mse": 0.0002095
+        }
+      ]
+    },
+    "physics_informed_cnn": {
+      "physics_residual_weight": 0.5,
+      "train_seconds": 9.583,
+      "test": {
+        "temperature_mae": 0.007878,
+        "pde_residual_rmse": 0.008725,
+        "mean_relative_effective_conductivity_error": 0.061707,
+        "temperature_bounds_violation_rate": 0.0
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "validation_mse": 0.002141
+        },
+        {
+          "epoch": 40,
+          "validation_mse": 0.0003139
+        },
+        {
+          "epoch": 80,
+          "validation_mse": 0.0002077
+        },
+        {
+          "epoch": 160,
+          "validation_mse": 0.0001762
+        }
+      ]
+    }
+  },
+  "checkpoint_note": "Transport CNN trained on synthetic maps; separate from pretrained SEM U-Net weights",
+  "interpretation": "Numerical surrogate benchmark only; no measured thermal conductivity, lifetime, or material-property prediction."
+}
