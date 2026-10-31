@@ -1,14 +1,9 @@
 name: SEM physics-informed ML
 on:
-  push:
-    paths:
-      - 'projects/sem-physics-ml/*.py'
-      - 'tests/test_sem_physics_ml.py'
-      - '.github/workflows/sem_physics_ml.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   synthetic-transport:
@@ -32,9 +27,3 @@ jobs:
         with:
           name: sem-physics-ml-synthetic
           path: projects/sem-physics-ml/results/
-      - name: Record reproducible synthetic results
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add projects/sem-physics-ml/results/benchmark.json projects/sem-physics-ml/results/benchmark.md projects/sem-physics-ml/results/transport_cnn_synthetic.pt projects/sem-physics-ml/results/inference.json
-          git diff --cached --quiet || (git commit -m "Record synthetic SEM transport benchmark" && git push)

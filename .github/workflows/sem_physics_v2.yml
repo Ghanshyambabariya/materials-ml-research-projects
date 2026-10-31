@@ -33,7 +33,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add projects/sem-physics-ml/results/v2/benchmark.json projects/sem-physics-ml/results/v2/benchmark.md projects/sem-physics-ml/results/v2/*.png projects/sem-physics-ml/results/v2/transport_cnn_variable_k.pt
-          git diff --cached --quiet || (git commit -m "Record repeatable SEM transport ablation" && git push)
+          git diff --cached --quiet || git commit -m "Record repeatable SEM transport ablation"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
       - name: Evaluate real NASA EBC test annotations
         run: python projects/sem-physics-ml/run_nasa_cases.py
       - name: Preserve numerical and real-annotation reports
@@ -49,4 +52,7 @@ jobs:
       - name: Record NASA annotation transfer report
         run: |
           git add projects/sem-physics-ml/results/real_annotations/nasa_ebc_cases.json projects/sem-physics-ml/results/real_annotations/nasa_ebc_cases.md
-          git diff --cached --quiet || (git commit -m "Record NASA EBC mask transport checks" && git push)
+          git diff --cached --quiet || git commit -m "Record NASA EBC mask transport checks"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
