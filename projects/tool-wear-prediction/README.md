@@ -44,3 +44,12 @@ Reports: [Vicomtech](results/external_tool_wear_vicomtech_report.md) | [Uniwear]
 python scripts/run_external_tool_wear.py --config configs/external_tool_wear_vicomtech.json
 python scripts/run_external_uniwear.py --config configs/external_uniwear_tool_wear.json
 ```
+
+
+## Model efficiency experiment
+
+Two checks: held-out-tool prediction error and training time. The comparison uses the existing Vicomtech dataset, selects models on validation tools, then tests on unseen tools.
+
+Run: python scripts/compare_tool_wear_models.py
+
+[Method and baseline](benchmarks/evidence.md) | [Benchmark workflow](../../.github/workflows/tool_wear_benchmark.yml)

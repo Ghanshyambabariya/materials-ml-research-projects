@@ -1,0 +1,33 @@
+name: Tool-wear benchmark
+on:
+  push:
+    paths:
+      - 'scripts/compare_tool_wear_models.py'
+      - 'tests/test_tool_wear_model_comparison.py'
+      - '.github/workflows/tool_wear_benchmark.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy pandas scikit-learn pytest
+      - run: python -m pytest -q tests/test_tool_wear_model_comparison.py
+      - run: python scripts/compare_tool_wear_models.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tool-wear-model-comparison
+          path: projects/tool-wear-prediction/benchmarks/model_comparison.*
+      - name: Keep benchmark results in repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add projects/tool-wear-prediction/benchmarks/model_comparison.json projects/tool-wear-prediction/benchmarks/model_comparison.md
+          git diff --cached --quiet || (git commit -m "Record held-out tool-wear benchmark" && git push)
