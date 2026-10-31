@@ -1,14 +1,10 @@
-# 01. Scientific Microscopy Segmentation & Explainable Computer Vision
+# SEM segmentation
 
 [Back to project index](../README.md) | [Back to main README](../../README.md)
 
 This project trains and evaluates segmentation models for SEM microscopy images. The current benchmark uses the publicly available NASA EBC SEM segmentation data from the NASA pretrained microscopy models repository. The images are not proprietary and were not personally acquired.
 
-## Why Used
-
-SEM segmentation is useful when microstructural regions need to be separated consistently across images. The workflow keeps the model small enough to retrain locally while still reporting pixel-level metrics and visual evidence.
-
-## How Used
+## Methods
 
 - loaded NASA EBC SEM image/mask data from `EBC1`, `EBC2`, and `EBC3`
 - trained U-Net and compact FCN segmentation baselines on the same split
@@ -17,7 +13,7 @@ SEM segmentation is useful when microstructural regions need to be separated con
 - generated prediction panels with original SEM image, ground truth, prediction, overlay, error map, and input-gradient saliency
 - kept entropy-based active learning as a separate loop for low-label experiments
 
-## Final Results
+## Results
 
 | Dataset | Model | Train / Val / Test | Pixel Accuracy | Foreground IoU | Dice/F1 | Precision | Recall |
 |---|---|---:|---:|---:|---:|---:|---:|
@@ -30,7 +26,7 @@ The U-Net baseline performs better on this held-out split. The small minority cl
 
 The prediction panel includes input-gradient saliency beside the segmentation outputs. This attribution view is used to inspect which image regions influenced the model response and whether the network is focusing on microstructural boundaries and foreground regions rather than only background contrast.
 
-## Results
+## Figures
 
 ![SEM predictions](results/sem_ebc_predictions.png)
 

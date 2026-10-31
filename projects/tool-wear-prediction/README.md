@@ -1,14 +1,8 @@
-# 03. Tool-Wear Prediction Benchmark
+# Tool-wear prediction
 
 [Back to project index](../README.md) | [Back to main README](../../README.md)
 
-Independent project for tool-wear regression and wear-stage classification on public machining datasets.
-
-## Why Used
-
-Tool wear is a practical condition-monitoring problem. The benchmark estimates wear or wear stage from measured process data and evaluates generalization on tools or experiments not seen during training.
-
-## How Used
+## Methods
 
 - downloaded and cleaned real public machining datasets
 - checked numeric columns and target labels
@@ -18,7 +12,7 @@ Tool wear is a practical condition-monitoring problem. The benchmark estimates w
 - reported regression and classification metrics
 - saved plots and Markdown reports
 
-## Final Results
+## Results
 
 | Dataset | Task | Split | Result |
 |---|---|---|---|
@@ -28,11 +22,7 @@ Tool wear is a practical condition-monitoring problem. The benchmark estimates w
 
 The Katulu Uniwear score is reported as a cross-experiment baseline. Its lower value reflects domain shift between experiment tags and is useful for evaluating feature robustness rather than only in-distribution accuracy.
 
-## Research Alignment
-
-The implementation uses grouped validation to reduce leakage and reports both regression and classification metrics for practical tool-wear analysis.
-
-## Results
+## Figures
 
 ![Vicomtech tool wear](results/external_tool_wear_vicomtech.png)
 

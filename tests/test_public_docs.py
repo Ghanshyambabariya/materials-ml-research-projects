@@ -11,10 +11,10 @@ def test_public_project_index_lists_separate_projects_only() -> None:
     projects = (ROOT / "projects" / "README.md").read_text(encoding="utf-8")
     public_text = readme + "\n" + projects
 
-    assert "01 Microscopy CV" in public_text
-    assert "02 Process Signal ML" in public_text
-    assert "03 Tool-Wear Benchmarks" in public_text
-    assert "04 Materials Property ML" in public_text
+    assert "SEM Segmentation" in public_text
+    assert "Process Signal ML" in public_text
+    assert "Tool-Wear Prediction" in public_text
+    assert "Concrete Strength ML" in public_text
     assert "05 Multimodal Platform" not in public_text
     assert "combined benchmark" not in public_text.lower()
 

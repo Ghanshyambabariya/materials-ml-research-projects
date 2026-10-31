@@ -1,14 +1,8 @@
-# 04. Materials Property ML
+# Concrete strength prediction
 
 [Back to project index](../README.md) | [Back to main README](../../README.md)
 
-Independent project for material-property regression from tabular composition and process variables.
-
-## Why Used
-
-Many materials problems are tabular before they become image- or sequence-modelling problems. This benchmark uses transparent preprocessing, multiple regression baselines, cross-validation, and SHAP explanations before making stronger model claims.
-
-## How Used
+## Methods
 
 - downloaded the public concrete compressive-strength table
 - removed duplicate rows and checked missing values
@@ -17,7 +11,7 @@ Many materials problems are tabular before they become image- or sequence-modell
 - reported MAE, RMSE, R2, and five-fold cross-validation mean +/- standard deviation
 - generated SHAP global importance, beeswarm, and individual prediction explanations for the XGBoost model
 
-## Final Results
+## Results
 
 | Model | Hold-out MAE | Hold-out RMSE | Hold-out R2 | CV R2 mean +/- std |
 |---|---:|---:|---:|---:|
@@ -31,7 +25,7 @@ XGBoost gives the strongest held-out result in the current run. SHAP ranks curin
 
 SHAP is used to inspect both global feature behavior and a single held-out prediction. The goal is to check whether the model follows physically reasonable composition/process trends instead of relying only on opaque feature importance scores.
 
-## Results
+## Figures
 
 ![Concrete strength](results/external_concrete_strength.png)
 

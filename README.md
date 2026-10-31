@@ -1,15 +1,4 @@
-<p align="center">
-  <img src="assets/materials_ml_banner.svg" alt="Materials ML research projects banner" width="100%">
-</p>
-
-<p align="center">
-  <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB">
-  <img alt="ML" src="https://img.shields.io/badge/ML-CV%20%7C%20Signals%20%7C%20Materials-2E8B57">
-  <img alt="Status" src="https://img.shields.io/badge/status-active%20research%20workspace-1F6FEB">
-  <img alt="CI" src="https://github.com/Ghanshyambabariya/materials-ml-research-projects/actions/workflows/ci.yml/badge.svg">
-</p>
-
-# Scientific Machine Learning for Materials & Engineering Data
+# Materials ML Projects
 
 This repository contains independent scientific-machine-learning projects for materials images, process signals, machining datasets, and tabular materials properties. Each project has its own data path, methods, outputs, and result page while sharing one tested Python codebase.
 
@@ -30,16 +19,16 @@ Shared code is kept in `src/`, experiment runners are in `scripts/`, configurati
 | Process data | force/moment feature engineering |
 | Materials ML | structure/property prediction |
 
-## Project Areas
+## Projects
 
 ![Project evidence map](assets/project_evidence_map.svg)
 
 | Project | Method Focus | Current Output |
 |---|---|---|
-| [01 Microscopy CV](projects/01_microscopy_cv) | SEM segmentation, architecture comparison, active learning, and image attribution | IoU/Dice/precision/recall with qualitative outputs |
-| [02 Process Signal ML](projects/02_process_signal_ml) | 20 kHz force/moment feature extraction and ML modelling | `Fx`, `Fy`, `Fz`, `Mz` feature table and model results |
-| [03 Tool-Wear Benchmarks](projects/03_tool_wear_benchmarks) | grouped-validation wear regression and classification | Vicomtech and Uniwear benchmark reports |
-| [04 Materials Property ML](projects/04_materials_property_ml) | tabular preprocessing, Ridge/RF/XGBoost regression, and SHAP | concrete compressive-strength benchmark and explainability report |
+| [SEM Segmentation](projects/sem-segmentation) | SEM segmentation, architecture comparison, active learning, and image attribution | IoU/Dice/precision/recall with qualitative outputs |
+| [Process Signal ML](projects/process-signal-ml) | 20 kHz force/moment feature extraction and ML modelling | `Fx`, `Fy`, `Fz`, `Mz` feature table and model results |
+| [Tool-Wear Prediction](projects/tool-wear-prediction) | grouped-validation wear regression and classification | Vicomtech and Uniwear benchmark reports |
+| [Concrete Strength ML](projects/concrete-strength-ml) | tabular preprocessing, Ridge/RF/XGBoost regression, and SHAP | concrete compressive-strength benchmark and explainability report |
 
 ## Current Results
 

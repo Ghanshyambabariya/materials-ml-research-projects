@@ -1,18 +1,12 @@
-# 02. Process-Signal ML
+# Process signal ML
 
 [Back to project index](../README.md) | [Back to main README](../../README.md)
-
-Independent project for converting high-frequency force and moment channels into modelling features.
 
 ## Data Note
 
 The signal files used here are synthetically generated force/moment signals designed to reproduce a high-frequency process-monitoring workflow. They do not contain proprietary experimental data from previous employment or industrial work.
 
-## Why Used
-
-Raw high-frequency signals are usually too large to use directly in simple ML workflows. Windowing and feature extraction convert the signal into interpretable time-domain, frequency-domain, and process-energy descriptors.
-
-## How Used
+## Methods
 
 - generated synchronized high-frequency force/moment channels
 - segmented the signal into analysis windows
@@ -20,18 +14,14 @@ Raw high-frequency signals are usually too large to use directly in simple ML wo
 - trained baseline models for process-state classification and property regression
 - saved signal plots, feature tables, and metrics
 
-## Final Results
+## Results
 
 | Task | Data | Model | Result |
 |---|---|---|---|
 | process-state classification | 20 kHz force/moment windows | Random Forest | accuracy `1.0000` |
 | property regression | 20 kHz force/moment windows | Random Forest | R2 `0.9998` |
 
-## Research Alignment
-
-The implementation follows signal-analysis practice by windowing the raw channels before modelling and by separating time-domain, spectral, resultant-force, and energy features.
-
-## Results
+## Figures
 
 ![Materials signal summary](results/materials_signal_summary.png)
 

@@ -82,25 +82,25 @@ def system_architecture_svg() -> str:
   <text x="88" y="510" class="section">Microscopy CV</text>
   <text x="88" y="548" class="body">segmentation masks</text>
   <text x="88" y="576" class="body">active learning</text>
-  <text x="88" y="608" class="small">project: 01_microscopy_cv</text>
+  <text x="88" y="608" class="small">project: sem-segmentation</text>
 
   <rect x="386" y="470" width="290" height="150" class="card" fill="#102D2D" stroke="#2B8C99"/>
   <text x="412" y="510" class="section">Process Signals</text>
   <text x="412" y="548" class="body">20 kHz force windows</text>
   <text x="412" y="576" class="body">spectral features</text>
-  <text x="412" y="608" class="small">project: 02_process_signal_ml</text>
+  <text x="412" y="608" class="small">project: process-signal-ml</text>
 
   <rect x="710" y="470" width="290" height="150" class="card" fill="#302815" stroke="#BE9440"/>
   <text x="736" y="510" class="section">Tool Wear</text>
   <text x="736" y="548" class="body">public machining data</text>
   <text x="736" y="576" class="body">grouped validation</text>
-  <text x="736" y="608" class="small">project: 03_tool_wear_benchmarks</text>
+  <text x="736" y="608" class="small">project: tool-wear-prediction</text>
 
   <rect x="1034" y="470" width="290" height="150" class="card" fill="#172E20" stroke="#66B879"/>
   <text x="1060" y="510" class="section">Property ML</text>
   <text x="1060" y="548" class="body">tabular regression</text>
   <text x="1060" y="576" class="body">feature importance</text>
-  <text x="1060" y="608" class="small">project: 04_materials_property_ml</text>
+  <text x="1060" y="608" class="small">project: concrete-strength-ml</text>
 </svg>"""
 
 
