@@ -1,0 +1,7 @@
+torch>=2.2,<2.12
+numpy>=1.26,<3
+scipy>=1.11,<2
+matplotlib>=3.8,<4
+pillow>=10,<13
+pytest>=8,<10
+torchvision>=0.17,<0.27

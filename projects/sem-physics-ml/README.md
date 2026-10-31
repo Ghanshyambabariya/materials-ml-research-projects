@@ -1,55 +1,54 @@
-# SEM Physics-Informed ML
+# Physics-informed heat transport from SEM microstructures
 
-This is a separate project that builds on the existing NASA EBC segmentation model. It combines an image segmentation mask with a physics-informed convolutional neural network to predict a **dimensionless two-dimensional heat-transport field**.
+A finite-volume heat solver and a physics-regularized CNN operating on segmented NASA environmental barrier coating (EBC) micrographs. This is a separate project; the original [SEM segmentation](../sem-segmentation) code is unchanged.
 
-## How it connects to the trained SEM model
+**Scientific status:** Synthetic numerical model and three-loss ablation implemented. Real NASA EBC annotation geometry can be analyzed. The original trained SEM U-Net checkpoint is not in the repository, so **image-to-transport validation remains incomplete**.
 
-1. Existing UNetSmall predicts a three-class segmentation from an SEM image: background (0), oxide (1), crack (2).
-2. The mask is converted to an assumed phase-conductivity map.
-3. A finite-volume solver supplies reference temperature fields.
-4. An ANN/CNN learns temperature fields, with a heat-equation residual added to its training loss.
-5. The output reports a temperature field, model error and a modeled effective-conductivity proxy.
+## Phase definitions and limits
 
-The SEM U-Net's results are already in the [segmentation project](../sem-segmentation). **Its trained checkpoint is not committed to GitHub**, so inference on actual SEM images requires your locally saved sem_ebc_unet.pt. The pipeline never substitutes random U-Net weights.
+NASA EBC annotations have labels 0 background, 1 oxide, 2 crack. Background is not necessarily one physical material. All thermal conductivities here are **illustrative dimensionless values**, not experimentally measured coefficients. The original U-Net reports foreground IoU 0.439 and crack IoU 0.126; crack segmentation error could significantly affect a thermal proxy.
 
-## Physics
+## Physics and models
 
-Solve ∇·(k∇T) = 0 with left T=1, right T=0, and insulating top/bottom. The reference is a five-point finite-volume solve with harmonic conductivity at phase boundaries. The ANN has the two Dirichlet boundaries enforced by its architecture; the training loss includes both data error and the finite-volume residual.
+The solver handles div(k grad T)=0 with opposing fixed-temperature boundaries 1/0 and insulated other boundaries. Both x and y image directions are implemented, using harmonic-mean interface conductance and a sparse finite-volume solver. Interpreting image y as through-thickness requires checking actual image orientation.
 
-The assumed normalized phase conductivities are 1.0, 0.4 and 0.05 (background, oxide, crack). **These are illustrative choices, not measured thermal properties.** A 2-D cross-section does not establish true 3-D thermal conductivity or service life.
+Three CNN variants share the same convolutional architecture and inputs (one-hot labels, phase conductivity, x/y coordinate channels):
 
-## Reproduce
+1. Supervised CNN trained on numerical temperature fields.
+2. CNN with an added finite-volume conservation residual.
+3. CNN with conservation and numerical boundary-flux supervision.
 
-From the repository root:
+The third term is **supervised flux regularization**, not an independent physical measurement.
 
-```bash
-python -m pip install torch numpy scipy pillow torchvision pytest
-python -m pytest -q tests/test_sem_physics_ml.py
-python projects/sem-physics-ml/train.py --epochs 160 --save-checkpoint
-python projects/sem-physics-ml/predict.py --demo
-```
+## Reproducibility
 
-The benchmark trains on 64 artificially generated phase masks, validates on 16 different masks, and tests on 20 additional masks. Masks are 24×24 pixels. Both the CNN without physics loss and the CNN with physics loss use the same architecture and independent numerical temperature references. The results are **synthetic numerical experiments, not measured SEM results**.
+Run from the repository root with Python 3.12:
 
-Run on your own NASA EBC image and trained U-Net checkpoint:
+- Install: python -m pip install -r projects/sem-physics-ml/requirements.txt
+- Tests: python -m pytest -q tests/test_sem_physics_ml.py tests/test_sem_methods.py tests/test_sem_validate.py tests/test_sem_nasa_cases.py
+- Repeated synthetic experiments: python projects/sem-physics-ml/benchmark_v2.py --epochs 65 --seeds 5 17 29
+- Real NASA annotation study: python projects/sem-physics-ml/run_nasa_cases.py
+- Analyze an annotation directly: python projects/sem-physics-ml/validate_sem.py --mask path/to/EBC_annotation.tif --direction y
+- Compare U-Net prediction to annotation after obtaining actual weights: python projects/sem-physics-ml/validate_sem.py --mask path/to/annotation.tif --image path/to/image.tif --sem-checkpoint path/to/sem_ebc_unet.pt
 
-```bash
-python projects/sem-physics-ml/predict.py --image /path/to/sem_image.tif --sem-checkpoint /path/to/sem_ebc_unet.pt
-```
+Synthetic training uses 48 training, 16 validation and 24 test maps at 24x24 resolution, with three initialization seeds (5,17,29), fixed background k=1, oxide k sampled 0.15–0.75 and crack k sampled 0.015–0.12. All values are assumptions. Downsampling may erase thin cracks; results record original and downsampled class fractions.
 
-Or bypass the U-Net using a NASA EBC annotation:
+[Extended synthetic benchmark](results/v2/benchmark.md) | [NASA EBC annotation transfer](results/real_annotations/nasa_ebc_cases.md) | [Research report](research_report.md)
 
-```bash
-python projects/sem-physics-ml/predict.py --mask /path/to/ebc_label_mask.tif
-```
+![Numerical reference and ANN temperature prediction](results/v2/temperature_fields.png)
 
-The script requires the trained transport-model checkpoint at results/transport_cnn_synthetic.pt. If unavailable, run train.py with --save-checkpoint first. It resizes phase masks to 24×24 with nearest-neighbor sampling. **Small cracks may disappear**, so the current model is a demonstration and cannot yet quantify real coating behavior.
+![Across-seed comparison](results/v2/repeatability.png)
 
-## Goals and evidence
+## Files
 
-- Goal 1: improve the synthetic test temperature error and PDE residual versus an ordinary data-only CNN. The 160-epoch experiment meets both checks.
-- Goal 2: measure how the real trained SEM segmentation affects a heat-transport proxy versus the annotated mask. The adapter is implemented, but cannot be validated until the actual segmentation weights and image/mask data are supplied.
+- physics.py, model.py — original finite-volume solver and transport CNN
+- methods.py — directional conduction, conservation and mask morphology
+- benchmark_v2.py — variable conductivity and multi-seed three-model experiment
+- validate_sem.py — annotation-based numerical check and optional U-Net comparison
+- run_nasa_cases.py — NASA real-geometry study without original U-Net weights
+- predict.py — compatibility adapter for original SEM U-Net checkpoint
+- results/ — synthetic and real-annotation reports, with provenance information
 
-[Experiment notes](research_report.md) | [Synthetic benchmark](results/benchmark.md)
+This 2-D simulation-supervised surrogate has not been calibrated or validated for 3-D thermal conductivity, oxidation resistance, or coating lifetime. The numerical reference and physics loss use the same discretization.
 
-Sources: [NASA EBC labels](https://github.com/nasa/pretrained-microscopy-models), [Stuckner et al., 2022](https://doi.org/10.1038/s41524-022-00878-5), [2-D versus 3-D microstructure limitation](https://pmc.ncbi.nlm.nih.gov/articles/PMC11620251/).
+Sources: [NASA EBC](https://github.com/nasa/pretrained-microscopy-models), [NASA AQUAMI-TGO](https://github.com/nasa/AQUAMI-TGO), [Zhu et al. 2026](https://doi.org/10.1016/j.icheatmasstransfer.2026.111898).

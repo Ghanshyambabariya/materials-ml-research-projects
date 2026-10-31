@@ -1,37 +1,27 @@
-# SEM Physics-Informed ML — research report
+# SEM segmentation and physics-informed conduction: methods and findings
 
-## Existing work
+## Research question
 
-The user's SEM project reports NASA EBC UNetSmall segmentation performance with three classes: background, oxide and crack. The reported foreground IoU is 0.4388, with the crack class harder to segment. The GitHub repository contains results and the expected checkpoint path but not the actual trained weight file or TIFF inputs.
+Does a finite-volume conservation loss improve a convolutional surrogate for heterogeneous 2-D conduction, and does additional supervised flux regularization improve its modeled effective-conductivity proxy?
 
-NASA's definitions mean this is **not** a pore-segmentation dataset. Oxide and crack must not be interpreted as interchangeable porosity classes.
+## Source constraints
 
-## Prediction question
+The NASA EBC annotations use background=0, oxide=1, crack=2. The linked U-Net has held-out foreground IoU 0.439 and crack IoU 0.126, but the trained weight file is not present. The proposed physical values for the three semantic classes are not experimentally calibrated. The y direction is a provisional proxy for cross-sectional through-thickness conduction, not a verified image orientation.
 
-Can a convolutional surrogate use segmented EBC phases to approximate the steady-state 2-D conduction equation ∇·(k∇T)=0, while reducing violations of that equation compared with a data-only CNN?
+## Numerical formulation
 
-The physics solver uses a harmonic-mean finite-volume discretization. The architecture enforces left/right temperatures. A differentiable residual of the same discretized equation supplements the numerical-solution loss.
-
-The class conductivities are normalized assumptions (1.0, 0.4, 0.05); the experiment neither estimates measured conductivity nor predicts coating lifetime.
+For zero-source steady-state conduction, solve div(k grad T)=0 using harmonic-mean conductance at cell interfaces, imposed temperatures 1 and 0 at opposing edges, insulated top/bottom edges, and sparse linear algebra. CNN boundaries are embedded, and models are trained with a numerical-temperature MSE, an optional node flux-balance penalty, and optionally the squared relative error of numerical boundary flux. The last component uses supervised numerical targets and must not be confused with independently validated physics.
 
 ## Controlled experiment
 
-- Artificial phase-mask generator with train/validation/test seeds 17, 18, 19.
-- Split sizes: 64 training, 16 validation, 20 test.
-- 24x24 masks, 160 epochs, network width 24, seed 17.
-- Compare identical CNNs with PDE-loss weights 0 and 0.5; select their checkpoints on validation MSE only.
-- On independently generated masks, compare temperature MAE, PDE residual, proxy effective conductivity relative error and physical temperature-bound violations.
-- The finite-volume reference is checked against homogeneous analytical solutions and layered conservation tests.
+Synthetic 24x24 three-class maps: 48 training, 16 validation, 24 test. Oxide k is sampled uniformly 0.15–0.75, crack 0.015–0.12, background k=1; all are hypothetical relative conductivities. Both image-flow orientations are represented by rotation. Three model initialization seeds (5,17,29) are measured on the same fixed held-out synthetic geometries. Comparison metrics: temperature MAE, discrete residual, modeled boundary-conductivity proxy error, and CNN-versus-FVM inference time (without training).
 
-## Interpretation
+Unit tests cover homogeneous solutions in both directions, layer parallel-versus-through transport, conservation, and original-mask resizing loss. NASA EBC1–3 real held-out *annotation* masks can be downloaded separately for coarsening checks, sensitivity to conductivity scenarios and out-of-domain synthetic-CNN comparison. Those masks do not provide measured heat flux or experimental k, and the trained SEM segmentation model is not invoked without its weights.
 
-The physics-regularized model reduces both held-out temperature MAE and the discretized PDE residual in the local synthetic benchmark. This is evidence for a **numerical surrogate**, not evidence of improved SEM classification or validated coating thermal properties.
+## Interpretation and necessary next evidence
 
-Limitations: The data generator is simpler than real EBC microscopy; 24x24 sampling can remove thin cracks; the U-Net weights are not in the linked repository; 2-D section morphology cannot directly establish 3-D conduction; interface materials and coefficients have not been calibrated.
+Only a synthetic numerical surrogate is verified. Adding a PDE residual alone may decrease node conservation error while leaving effective-conductivity proxy error high; adding supervised boundary flux can improve the latter. The finite-volume solver produces both target and training penalty, so this is not independent physics verification. Reported batch speedup applies only to small CPU masks, not full-resolution SEM images.
 
-Next experimental step: recover the SEM U-Net checkpoint and compare results from predicted masks versus NASA's ground-truth masks on held-out SEM images. Revisit image resolution and quantify uncertainty due to crack segmentation before property interpretation.
+Physical validation requires the original checkpoint and matched SEM images, correct sample orientation and pixel scale, reliable phase/material identification, native-resolution crack validation, measured phase and interface properties, and comparison against independent experimental heat-flux data or higher-fidelity simulations. A 2-D image cannot establish 3-D connectivity or service life.
 
-References:
-- NASA dataset and label mapping: https://github.com/nasa/pretrained-microscopy-models
-- MicroNet segmentation publication: https://doi.org/10.1038/s41524-022-00878-5
-- 2-D versus 3-D microstructure caution: https://pmc.ncbi.nlm.nih.gov/articles/PMC11620251/
+References: https://github.com/nasa/pretrained-microscopy-models ; https://github.com/nasa/AQUAMI-TGO ; https://doi.org/10.1016/j.icheatmasstransfer.2026.111898
