@@ -1,0 +1,263 @@
+{
+  "experiment_version": 2,
+  "torch_version": "2.11.0+cu130",
+  "numpy_version": "2.5.4",
+  "data_provenance": "synthetic procedural masks only",
+  "n_train": 48,
+  "n_val": 16,
+  "n_test": 24,
+  "size": 24,
+  "epochs": 65,
+  "training_conditions": "background k=1; oxide k in [0.15,0.75]; crack k in [0.015,0.12]",
+  "transport_direction": "both x and y (rotate y maps into x frame)",
+  "seeds": [
+    {
+      "seed": 5,
+      "cnn": {
+        "train_s": 1.0127474260000042,
+        "history": [
+          {
+            "epoch": 1,
+            "validation_mse": 0.009661821648478508
+          },
+          {
+            "epoch": 32,
+            "validation_mse": 0.0024071182124316692
+          },
+          {
+            "epoch": 65,
+            "validation_mse": 0.0019160530064255
+          }
+        ],
+        "test": {
+          "temperature_mae": 0.022860949859023094,
+          "pde_residual_rmse": 0.01681729219853878,
+          "relative_proxy_error": 0.20060102478460484
+        }
+      },
+      "physics_cnn": {
+        "train_s": 1.0280586510000091,
+        "history": [
+          {
+            "epoch": 1,
+            "validation_mse": 0.009661834686994553
+          },
+          {
+            "epoch": 32,
+            "validation_mse": 0.00244974996894598
+          },
+          {
+            "epoch": 65,
+            "validation_mse": 0.0018793256022036076
+          }
+        ],
+        "test": {
+          "temperature_mae": 0.02246805466711521,
+          "pde_residual_rmse": 0.013035017997026443,
+          "relative_proxy_error": 0.19926617926796927
+        }
+      },
+      "physics_cnn_flux": {
+        "train_s": 1.0653002720000018,
+        "history": [
+          {
+            "epoch": 1,
+            "validation_mse": 0.00965704582631588
+          },
+          {
+            "epoch": 32,
+            "validation_mse": 0.0025034465361386538
+          },
+          {
+            "epoch": 65,
+            "validation_mse": 0.0018210895359516144
+          }
+        ],
+        "test": {
+          "temperature_mae": 0.02142386883497238,
+          "pde_residual_rmse": 0.013684273697435856,
+          "relative_proxy_error": 0.132973254461743
+        }
+      }
+    },
+    {
+      "seed": 17,
+      "cnn": {
+        "train_s": 1.0828788019999962,
+        "history": [
+          {
+            "epoch": 1,
+            "validation_mse": 0.015605649910867214
+          },
+          {
+            "epoch": 32,
+            "validation_mse": 0.0026614926755428314
+          },
+          {
+            "epoch": 65,
+            "validation_mse": 0.002198353875428438
+          }
+        ],
+        "test": {
+          "temperature_mae": 0.0239825788885355,
+          "pde_residual_rmse": 0.021357247605919838,
+          "relative_proxy_error": 0.37548391595829256
+        }
+      },
+      "physics_cnn": {
+        "train_s": 0.9769602460000044,
+        "history": [
+          {
+            "epoch": 1,
+            "validation_mse": 0.0156056247651577
+          },
+          {
+            "epoch": 32,
+            "validation_mse": 0.002918537240475416
+          },
+          {
+            "epoch": 65,
+            "validation_mse": 0.0021602818742394447
+          }
+        ],
+        "test": {
+          "temperature_mae": 0.023302428424358368,
+          "pde_residual_rmse": 0.01608184725046158,
+          "relative_proxy_error": 0.38469652828056883
+        }
+      },
+      "physics_cnn_flux": {
+        "train_s": 0.9975998970000006,
+        "history": [
+          {
+            "epoch": 1,
+            "validation_mse": 0.01560760848224163
+          },
+          {
+            "epoch": 32,
+            "validation_mse": 0.002948132809251547
+          },
+          {
+            "epoch": 65,
+            "validation_mse": 0.0021395590156316757
+          }
+        ],
+        "test": {
+          "temperature_mae": 0.022043826058506966,
+          "pde_residual_rmse": 0.015994543209671974,
+          "relative_proxy_error": 0.11448007193514237
+        }
+      }
+    },
+    {
+      "seed": 29,
+      "cnn": {
+        "train_s": 0.9783376550000042,
+        "history": [
+          {
+            "epoch": 1,
+            "validation_mse": 0.01111743226647377
+          },
+          {
+            "epoch": 32,
+            "validation_mse": 0.0021403199061751366
+          },
+          {
+            "epoch": 65,
+            "validation_mse": 0.0017078601522371173
+          }
+        ],
+        "test": {
+          "temperature_mae": 0.021491385996341705,
+          "pde_residual_rmse": 0.015749486163258553,
+          "relative_proxy_error": 0.2850986107601758
+        }
+      },
+      "physics_cnn": {
+        "train_s": 1.0060858589999953,
+        "history": [
+          {
+            "epoch": 1,
+            "validation_mse": 0.01111756730824709
+          },
+          {
+            "epoch": 32,
+            "validation_mse": 0.002167285652831197
+          },
+          {
+            "epoch": 65,
+            "validation_mse": 0.0017275619320571423
+          }
+        ],
+        "test": {
+          "temperature_mae": 0.020988399162888527,
+          "pde_residual_rmse": 0.011668159626424313,
+          "relative_proxy_error": 0.2882777852346646
+        }
+      },
+      "physics_cnn_flux": {
+        "train_s": 1.0680266579999937,
+        "history": [
+          {
+            "epoch": 1,
+            "validation_mse": 0.011122488416731358
+          },
+          {
+            "epoch": 32,
+            "validation_mse": 0.002545126248151064
+          },
+          {
+            "epoch": 65,
+            "validation_mse": 0.001954485662281513
+          }
+        ],
+        "test": {
+          "temperature_mae": 0.021617243066430092,
+          "pde_residual_rmse": 0.012880407273769379,
+          "relative_proxy_error": 0.14435542362296014
+        }
+      }
+    }
+  ],
+  "summary": {
+    "temperature_mae": {
+      "cnn_mean": 0.022778304914633434,
+      "physics_cnn_mean": 0.022252960751454037,
+      "physics_cnn_flux_mean": 0.021694979319969814,
+      "cnn_sd": 0.0012476510516382768,
+      "physics_cnn_sd": 0.0011719137767559982,
+      "physics_cnn_flux_sd": 0.0003172048763637965,
+      "flux_better_than_cnn_seeds": 2,
+      "n_seeds": 3
+    },
+    "pde_residual_rmse": {
+      "cnn_mean": 0.01797467532257239,
+      "physics_cnn_mean": 0.013595008291304111,
+      "physics_cnn_flux_mean": 0.014186408060292402,
+      "cnn_sd": 0.0029776498906516854,
+      "physics_cnn_sd": 0.002259502480173196,
+      "physics_cnn_flux_sd": 0.001616652357679596,
+      "flux_better_than_cnn_seeds": 3,
+      "n_seeds": 3
+    },
+    "relative_proxy_error": {
+      "cnn_mean": 0.28706118383435775,
+      "physics_cnn_mean": 0.2907468309277342,
+      "physics_cnn_flux_mean": 0.13060291667328183,
+      "cnn_sd": 0.08745796233688848,
+      "physics_cnn_sd": 0.09273982814147043,
+      "physics_cnn_flux_sd": 0.015078064714719003,
+      "flux_better_than_cnn_seeds": 3,
+      "n_seeds": 3
+    }
+  },
+  "runtime": {
+    "cnn_batch_median_s": 0.0010588984999984064,
+    "finite_volume_batch_median_s": 0.22610872899998924,
+    "cnn_vs_solver_speed_ratio": 213.53201369189733,
+    "batch_size": 24,
+    "hardware": "local CPU",
+    "note": "24x24 CPU batch; excludes training and synthetic-data generation."
+  },
+  "limits": "No experimental thermal properties; original U-Net checkpoint unavailable. Repeated seeds use one test set."
+}
