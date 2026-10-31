@@ -26,6 +26,7 @@ Shared code is kept in `src/`, experiment runners are in `scripts/`, configurati
 | Project | Method Focus | Current Output |
 |---|---|---|
 | [SEM Segmentation](projects/sem-segmentation) | SEM segmentation, architecture comparison, active learning, and image attribution | IoU/Dice/precision/recall with qualitative outputs |
+| [SEM Physics-Informed ML](projects/sem-physics-ml) | phase-aware, finite-volume-constrained CNN surrogate using NASA EBC SEM masks | synthetic numerical benchmark; trained U-Net checkpoint needed for real images |
 | [Process Signal ML](projects/process-signal-ml) | 20 kHz force/moment feature extraction and ML modelling | `Fx`, `Fy`, `Fz`, `Mz` feature table and model results |
 | [Tool-Wear Prediction](projects/tool-wear-prediction) | grouped-validation wear regression and classification | Vicomtech and Uniwear benchmark reports |
 | [Concrete Strength ML](projects/concrete-strength-ml) | tabular preprocessing, Ridge/RF/XGBoost regression, and SHAP | concrete compressive-strength benchmark and explainability report |

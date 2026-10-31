@@ -1,0 +1,40 @@
+name: SEM physics-informed ML
+on:
+  push:
+    paths:
+      - 'projects/sem-physics-ml/*.py'
+      - 'tests/test_sem_physics_ml.py'
+      - '.github/workflows/sem_physics_ml.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  synthetic-transport:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install numpy scipy torch torchvision pillow pytest
+      - name: Unit tests
+        run: python -m pytest -q tests/test_sem_physics_ml.py
+      - name: Train and compare on synthetic maps
+        run: python projects/sem-physics-ml/train.py --epochs 160 --save-checkpoint
+      - name: Synthetic inference smoke test
+        run: python projects/sem-physics-ml/predict.py --demo
+      - name: Test trained inference
+        run: python -m pytest -q tests/test_sem_physics_ml.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sem-physics-ml-synthetic
+          path: projects/sem-physics-ml/results/
+      - name: Record reproducible synthetic results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add projects/sem-physics-ml/results/benchmark.json projects/sem-physics-ml/results/benchmark.md projects/sem-physics-ml/results/transport_cnn_synthetic.pt projects/sem-physics-ml/results/inference.json
+          git diff --cached --quiet || (git commit -m "Record synthetic SEM transport benchmark" && git push)
