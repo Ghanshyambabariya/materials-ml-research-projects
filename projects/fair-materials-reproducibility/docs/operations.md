@@ -1,37 +1,29 @@
-# Storage operations and server deployment
+# Storage operations
 
-## Current operating model
+## Catalog and objects
 
-The implemented system is a local command-line application. It can run on a research server under a dedicated service account, with `--root` pointing to a private, local attached volume. It does not include a network API, authentication service, or multi-user access-control layer. No server deployment is claimed.
+The application runs locally through a command-line interface. A storage root contains `catalog.sqlite`, `objects/`, and `runs/`. SQLite holds dataset and artifact relationships and the authoritative run manifests. Object paths are content-addressed. Run JSON files are convenience copies of SQL records.
 
-- Restrict the root directory to the service account and approved researchers (for example, mode 0700 for private use).
-- Keep data roots outside the source checkout. Never commit real restricted datasets or environment files.
-- SQLite is intended here for a single-host workflow. Do not place its database on a network filesystem or use this implementation for high-concurrency multi-host ingestion.
-- Content-addressed snapshots are immutable by application convention, not operating-system write protection. Anyone with filesystem write access can alter them; integrity checks detect content changes on load.
-- CSV files are never evaluated as code. Model export contains JSON parameters rather than executable serialized Python objects.
+Dataset identities are immutable. Repeated ingestion of identical data and metadata is idempotent. A changed data/metadata snapshot has a distinct UUID. Object integrity is checked during loading and artifact retrieval.
 
-## Backup and restore
+Atomic file writes and SQL transactions have separate durability boundaries. An interrupted operation can leave unreferenced files or a missing run convenience copy. Audit lists orphan objects without deleting them. The backup process reconstructs run copies from SQL.
 
-1. Pause writers to obtain a coherent catalog/object snapshot.
-2. Copy the complete storage root, including `catalog.sqlite`, `objects/`, and `runs/`, to encrypted, access-controlled backup storage.
-3. Record a backup manifest and retain copies according to the institution's data policy.
-4. Restore into a new directory and run `search`, then load/export each dataset/run and verify exported bundles.
-5. Perform a recovery drill before treating backups as an operational guarantee.
+## Audit
 
-Atomic object writes and SQL transactions do not create one cross-filesystem transaction. A failed registration can leave unreferenced objects; do not remove objects automatically without auditing catalog references. Run records are authoritative in SQL; `runs/<uuid>/manifest.json` is a convenience copy. Compare the two during audits. A manifest-copy failure can occur after the SQL run commits.
+The `audit` command checks SQLite integrity, foreign keys, data and metadata hashes, artifact hashes and sizes, run-to-dataset provenance, and existing run copies. Its JSON report contains record counts, errors, and unreferenced objects. Detected errors produce exit status 1.
 
-## Reproducibility boundary
+## Backup
 
-Use the recorded dependency versions and clean Git revision. A dirty working tree is disclosed in the run manifest but not archived automatically. For publication runs, commit code before execution and archive the source commit together with the bundle. Installed wheels outside a checkout cannot infer the original commit and report null provenance.
+The `backup` command creates a consistent SQLite snapshot through the online backup API, copies its referenced objects, reconstructs run copies, audits the result, and writes a checksum manifest. A successful snapshot is published by staging-directory rename. Existing destinations and destinations inside the live storage root are rejected.
 
-Checksums protect against accidental corruption; a malicious actor could replace both content and checksum manifests. For authenticated releases, use institutionally managed signatures and archive records. There is no automated retention, replication, encryption, disaster recovery, or production hardening in this reference implementation.
+Concurrent append-only registration is compatible with the catalog snapshot. Mutation or deletion of referenced objects during copying is outside the supported operating model. Ordinary errors remove staging files; forced process termination can leave a staging directory.
 
-## Automated audit, backup, and restore (version 0.2)
+## Restore
 
-`audit` checks SQLite health, foreign keys, data/metadata hashes, artifact hashes and sizes, run-to-dataset provenance, and existing manifest convenience copies. It lists unreferenced object files without deleting them. CLI audit exits 1 when errors are found. Missing run convenience copies are recoverable from the authoritative SQL record and are not treated as data loss.
+The `restore` command verifies backup checksums, rejects escaping paths, copies verified files into staging, audits the catalog, and publishes a successful restoration to a new directory. Existing destinations are rejected. The implemented restore model assumes trusted backup sources.
 
-`backup` uses SQLite's backup API to obtain a catalog snapshot, copies only the objects referenced by that snapshot, reconstructs run copies, audits the result, and publishes it by renaming a staging directory. `restore` verifies the listed checksums, rejects escaping paths, copies into a new staging directory, audits the restored catalog, and publishes only a successful result. Both refuse existing destinations. A backup destination must be outside the live store.
+## Operating boundaries
 
-Concurrent append-only registrations can proceed while taking a SQLite snapshot. Do not mutate or delete object files during backup. Database and object corruption cause backup/restore to fail; staging is cleaned on ordinary errors. Process termination can leave a staging directory for manual review. Filesystem power-loss guarantees and hostile backup-file execution are outside this implementation's trust model: only restore backups from trusted sources. Backups are not encrypted and preserve the sensitivity of their source data.
+The application has no network API, identity service, multi-user authorization layer, automated retention, encryption, or remote replication. SQLite storage is single-host. Checksum verification detects corruption without providing cryptographic authenticity. Backups retain the sensitivity of source data.
 
-Dataset bundles contain the tabular input and evaluation evidence. Generic attached artifacts are handled through verified retrieval and full storage backup/restore; they are not silently added to evaluation bundles.
+Portable evaluation bundles contain tabular inputs and evaluation evidence. Opaque attached artifacts are accessible through verified retrieval and complete storage snapshots.
