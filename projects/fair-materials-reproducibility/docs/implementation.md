@@ -34,3 +34,15 @@ Added the installable CLI, locked environment, complete demonstration, operation
 - Provision a managed storage service with authentication, backups, monitoring, and recovery drills.
 
 These milestones are planned extensions; they are not claims of completed laboratory or server deployment work.
+
+## Version 0.2 — Future-use extensions implemented
+
+- Backward-compatible optional laboratory metadata and typed creators.
+- Streaming opaque artifact registration, verified retrieval, and dataset/run association.
+- Calibrated uniformly sampled signal features, with a synthetic 20 kHz example.
+- Nested grouped hyperparameter selection and conditional cluster-bootstrap MAE intervals.
+- Export/reproduction support for nested evaluation manifests.
+- Catalog/object/run audits, checksum-backed snapshots, and staged backup restoration.
+- Extension demonstration and 15 additional tests (26 total).
+
+These changes implement infrastructure hooks for future research. Real laboratory integration, MATLAB adapters, independent profile validation, authenticated server deployment, and supervision/publication evidence remain outside the completed scope. Detailed acceptance boundaries are in `scenarios.md`.

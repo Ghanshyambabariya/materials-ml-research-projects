@@ -17,7 +17,7 @@ A working Python and SQL research-data workflow for registering materials datase
 | Metadata validation | JSON Schema 2020-12, UUID/date checks, licenses, provenance, fixed units |
 | Data validation | Unique measurement IDs, finite numeric values, supported physical ranges |
 | Storage | SHA-256-addressed CSV objects, atomic file writes, SQLite catalog and run records |
-| Discovery | Parameterized SQL title search |
+| Discovery | Parameterized SQL metadata search |
 | ML workflow | Specimen-grouped holdout, training-only scaling, Ridge regression, mean baseline |
 | Run evidence | Saved partition IDs, predictions, portable JSON model coefficients, metrics, versions, Git commit and dirty state |
 | Export | CSV, metadata, run manifest, RO-Crate 1.2-style JSON-LD, checksum manifest |
@@ -92,3 +92,33 @@ This is a FAIR-oriented reference implementation. Local UUIDs do not supply glob
 ## Licenses
 
 Software is released under the MIT license. The included synthetic example data and its metadata are dedicated under CC0-1.0; see [DATA_LICENSE](DATA_LICENSE). Imported datasets must carry their own permitted license in metadata. No real experimental data or third-party datasets are bundled.
+
+## Version 0.2 extensions
+
+The workflow also supports optional laboratory metadata; generic checksum-verified artifact storage; calibrated signal CSV feature extraction; nested specimen-grouped evaluation; catalog audits; and staged storage backup/restore. See [supported scenarios and roadmap](docs/scenarios.md) for implemented behavior and remaining integration work.
+
+Run the complete extension demonstration:
+
+```bash
+python examples/run_extensions.py
+```
+
+This generates synthetic input, analyzes a 20 kHz force channel, registers signal and report artifacts, evaluates nested grouped regression, reproduces an exported evaluation, and backs up/restores the catalog and referenced files.
+
+Additional CLI commands (replace DATASET_ID, RUN_ID, and ARTIFACT_ID with actual identifiers):
+
+```bash
+fair-materials --root workspace/store search --material SiC --data-kind experimental
+fair-materials --root workspace/store evaluate DATASET_ID --outer-folds 5 --inner-folds 3 --alphas 0.1 1 10
+fair-materials --root workspace/store artifact-add DATASET_ID model.weights --kind weights --description "Model checkpoint" --run-id RUN_ID
+fair-materials --root workspace/store artifact-list DATASET_ID
+fair-materials --root workspace/store artifact-get ARTIFACT_ID workspace/recovered.weights
+fair-materials signal-features calibrated.csv channel-units.json --sampling-rate-hz 20000 --window-samples 2048
+fair-materials --root workspace/store audit
+fair-materials --root workspace/store backup workspace/storage-backup
+fair-materials restore workspace/storage-backup workspace/restored-store
+```
+
+For a CSV containing `time_s,Fx,Fy,Fz,Mz`, `channel-units.json` is `{"Fx":"N","Fy":"N","Fz":"N","Mz":"N*m"}`. Inputs must already contain calibrated physical values. The command checks timestamps against the declared rate and reports incomplete trailing samples explicitly. Outputs include source SHA-256, method, physical units, and per-window features.
+
+The extension suite and original suite comprise 26 automated tests. The repository-wide CI excludes this independently packaged project's test directory; its dedicated CI installs the locked environment, runs all its tests, and executes both demonstrations.

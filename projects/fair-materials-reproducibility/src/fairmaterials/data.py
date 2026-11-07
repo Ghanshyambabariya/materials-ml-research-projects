@@ -22,8 +22,11 @@ def canonical(value) -> bytes:
 
 
 def validate(metadata: dict, raw: bytes) -> list[dict]:
+    canonical(metadata)  # Reject non-finite numbers even in optional nested metadata.
     schema = json.loads(files("fairmaterials").joinpath("metadata.schema.json").read_text())
     Draft202012Validator(schema, format_checker=FormatChecker()).validate(metadata)
+    if metadata.get("parent_identifier") == metadata["identifier"]:
+        raise ValueError("Dataset cannot be its own parent")
     reader = csv.DictReader(io.StringIO(raw.decode("utf-8")))
     if reader.fieldnames != COLUMNS:
         raise ValueError(f"CSV columns must be exactly {COLUMNS}")

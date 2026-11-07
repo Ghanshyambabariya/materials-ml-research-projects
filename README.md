@@ -65,7 +65,7 @@ git clone https://github.com/Ghanshyambabariya/materials-ml-research-projects.gi
 cd materials-ml-research-projects
 python -m pip install -e . pytest timm
 python scripts/run_all_benchmarks.py
-python -m pytest -q
+python -m pytest -q --ignore=projects/fair-materials-reproducibility
 ```
 
 ## Useful Notes

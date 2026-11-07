@@ -69,15 +69,16 @@ class Store:
             row = connection.execute("SELECT * FROM datasets WHERE id=?", (identifier,)).fetchone()
         if row is None:
             raise ValueError("Unknown dataset identifier")
-        raw = (self.root / row["object_path"]).read_bytes()
+        from .artifacts import object_path
+        raw = object_path(self, row["object_path"]).read_bytes()
         if digest(raw) != row["sha256"] or digest(row["metadata"].encode()) != row["metadata_sha256"]:
             raise ValueError("Dataset integrity check failed")
         metadata = json.loads(row["metadata"])
         return dict(row), metadata, raw, validate(metadata, raw)
 
-    def search(self, query=""):
+    def search(self, query="", material=None, data_kind=None):
         with self.connect() as connection:
-            return [dict(row) for row in connection.execute("SELECT id,title,sha256 FROM datasets WHERE instr(lower(title),lower(?)) > 0 ORDER BY id", (query,))]
+            return [dict(row) for row in connection.execute("SELECT id,title,sha256 FROM datasets WHERE instr(lower(title || metadata),lower(?)) > 0 AND (? IS NULL OR json_extract(metadata, '$.experiment.material')=?) AND (? IS NULL OR json_extract(metadata, '$.provenance.kind')=?) ORDER BY id", (query, material, material, data_kind, data_kind))]
 
     def record_run(self, dataset_id, manifest):
         run_id = str(uuid.uuid4())

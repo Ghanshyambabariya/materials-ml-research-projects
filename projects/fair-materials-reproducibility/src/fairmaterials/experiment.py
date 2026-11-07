@@ -91,7 +91,7 @@ def export_bundle(store, run_id, destination):
         graph = [
             {"@id": "ro-crate-metadata.json", "@type": "CreativeWork", "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"}, "about": {"@id": "./"}},
             {"@id": "./", "@type": "Dataset", "name": metadata["title"], "description": metadata["description"], "datePublished": metadata["created"], "license": {"@id": license_url}, "creator": {"@id": "#creator"}, "identifier": f"urn:uuid:{metadata['identifier']}", "hasPart": [{"@id": name} for name in ["materials.csv", "metadata.json", "manifest.json"]]},
-            {"@id": "#creator", "@type": "Organization", "name": metadata["creator"]},
+            {"@id": "#creator", "@type": metadata.get("creator_type", "Organization"), "name": metadata["creator"]},
             {"@id": license_url, "@type": "CreativeWork", "name": metadata["license"]}
         ]
         for name in ["materials.csv", "metadata.json", "manifest.json"]:
@@ -122,7 +122,11 @@ def verify_bundle(destination, reproduce=False):
     manifest = json.loads((destination / "manifest.json").read_text())
     if manifest["dataset_id"] != metadata["identifier"] or manifest["dataset_sha256"] != digest(raw) or manifest["metadata_sha256"] != digest(meta_raw):
         raise ValueError("Bundle provenance mismatch")
-    if reproduce:
+    if reproduce and manifest.get("protocol") == "nested_group_kfold_v1":
+        from .evaluation import compare, nested
+        result = nested(rows, **manifest["parameters"])
+        compare(result, {key: manifest[key] for key in result})
+    elif reproduce:
         result = calculate(rows, **manifest["parameters"])
         if result["split"] != manifest["split"] or result["features"] != manifest["features"]:
             raise ValueError("Split or feature reproduction failed")

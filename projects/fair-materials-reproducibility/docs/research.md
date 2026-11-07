@@ -52,3 +52,16 @@ Decision: store data bytes by SHA-256 and use parameterized SQL to maintain cata
 4. Can a portable bundle reproduce independently of the original catalog?
 
 These are engineering validation questions. The synthetic dataset is not suitable for new claims about material properties.
+
+## 5. Version 0.2 extensions
+
+Official grouped-validation guidance: https://scikit-learn.org/stable/modules/cross_validation.html
+Nested model-selection rationale: https://scikit-learn.org/stable/auto_examples/model_selection/plot_nested_cross_validation_iris.html
+Welch spectral estimation: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html
+SQLite online backup API: https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.backup
+
+Decision: parameter selection happens inside each outer training partition with grouped inner folds. The outer test partition remains excluded from scaling and parameter choice. Out-of-fold errors are pooled, and an optional specimen-cluster bootstrap summarizes their conditional variation. The bootstrap resamples fixed errors; it does not refit models and must not be interpreted as full model uncertainty.
+
+Signal analysis uses explicit physical channel units and checks uniform timestamp spacing before computing features. Mean-detrended Hann-window Welch density estimates provide frequency and variance summaries. There is no instrument-driver, calibration, or anti-aliasing implementation. Streaming artifact storage preserves proprietary exports without interpreting them; format-aware adapters require actual source specifications.
+
+Backup uses a consistent SQLite catalog snapshot plus its referenced immutable objects. Staged publication and restore audit support recovery testing without claiming an operational backup service.

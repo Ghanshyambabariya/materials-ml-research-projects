@@ -25,3 +25,13 @@ Atomic object writes and SQL transactions do not create one cross-filesystem tra
 Use the recorded dependency versions and clean Git revision. A dirty working tree is disclosed in the run manifest but not archived automatically. For publication runs, commit code before execution and archive the source commit together with the bundle. Installed wheels outside a checkout cannot infer the original commit and report null provenance.
 
 Checksums protect against accidental corruption; a malicious actor could replace both content and checksum manifests. For authenticated releases, use institutionally managed signatures and archive records. There is no automated retention, replication, encryption, disaster recovery, or production hardening in this reference implementation.
+
+## Automated audit, backup, and restore (version 0.2)
+
+`audit` checks SQLite health, foreign keys, data/metadata hashes, artifact hashes and sizes, run-to-dataset provenance, and existing manifest convenience copies. It lists unreferenced object files without deleting them. CLI audit exits 1 when errors are found. Missing run convenience copies are recoverable from the authoritative SQL record and are not treated as data loss.
+
+`backup` uses SQLite's backup API to obtain a catalog snapshot, copies only the objects referenced by that snapshot, reconstructs run copies, audits the result, and publishes it by renaming a staging directory. `restore` verifies the listed checksums, rejects escaping paths, copies into a new staging directory, audits the restored catalog, and publishes only a successful result. Both refuse existing destinations. A backup destination must be outside the live store.
+
+Concurrent append-only registrations can proceed while taking a SQLite snapshot. Do not mutate or delete object files during backup. Database and object corruption cause backup/restore to fail; staging is cleaned on ordinary errors. Process termination can leave a staging directory for manual review. Filesystem power-loss guarantees and hostile backup-file execution are outside this implementation's trust model: only restore backups from trusted sources. Backups are not encrypted and preserve the sensitivity of their source data.
+
+Dataset bundles contain the tabular input and evaluation evidence. Generic attached artifacts are handled through verified retrieval and full storage backup/restore; they are not silently added to evaluation bundles.
