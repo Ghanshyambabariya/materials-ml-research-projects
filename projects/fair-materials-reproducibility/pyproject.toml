@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fair-materials-reproducibility"
+version = "0.1.0"
+description = "Traceable materials datasets and reproducible grouped ML experiments"
+requires-python = ">=3.12"
+dependencies = ["numpy==2.3.5", "scikit-learn==1.8.0", "jsonschema==4.25.1"]
+
+[project.scripts]
+fair-materials = "fairmaterials.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+fairmaterials = ["*.json", "*.sql"]
