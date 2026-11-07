@@ -13,4 +13,4 @@ Six projects, with their own methods and results.
 | [Process Signal ML](process-signal-ml) | high-frequency sensor features and process-state modelling | 20 kHz force/moment feature pipeline |
 | [Tool-Wear Prediction](tool-wear-prediction) | machining tool-wear regression and classification with grouped validation | Vicomtech tool-wear R2 `0.8680` |
 | [Concrete Strength ML](concrete-strength-ml) | tabular materials-property regression and SHAP explainability | XGBoost concrete strength R2 `0.9173` |
-| [FAIR Materials Data and ML Reproducibility](fair-materials-reproducibility) | data stewardship, provenance, grouped evaluation, and portable exports | 11 workflow tests; synthetic data reproduction |
+| [FAIR Materials Data and ML Reproducibility](fair-materials-reproducibility) | data stewardship, provenance, grouped evaluation, and portable exports | 26 workflow tests; nested evaluation and recovery |

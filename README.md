@@ -30,7 +30,7 @@ Shared code is kept in `src/`, experiment runners are in `scripts/`, configurati
 | [Process Signal ML](projects/process-signal-ml) | 20 kHz force/moment feature extraction and ML modelling | `Fx`, `Fy`, `Fz`, `Mz` feature table and model results |
 | [Tool-Wear Prediction](projects/tool-wear-prediction) | grouped-validation wear regression and classification | Vicomtech and Uniwear benchmark reports |
 | [Concrete Strength ML](projects/concrete-strength-ml) | tabular preprocessing, Ridge/RF/XGBoost regression, and SHAP | concrete compressive-strength benchmark and explainability report |
-| [FAIR Materials Data and ML Reproducibility](projects/fair-materials-reproducibility) | validated metadata, SQL catalog, immutable snapshots, grouped ML, and portable research bundles | 11 workflow tests; synthetic data reproduction |
+| [FAIR Materials Data and ML Reproducibility](projects/fair-materials-reproducibility) | validated metadata, SQL catalog, immutable snapshots, grouped ML, and portable research bundles | 26 workflow tests; nested evaluation and recovery |
 
 ## Current Results
 

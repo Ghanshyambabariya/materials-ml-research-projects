@@ -27,8 +27,8 @@ Added the installable CLI, locked environment, complete demonstration, operation
 ## Next research and infrastructure milestones
 
 - Replace synthetic examples with permission-cleared, domain-reviewed experimental datasets.
-- Extend metadata with instrument, acquisition batch, calibration, uncertainty, ORCID/ROR, and ontology terms.
-- Add grouped cross-validation and uncertainty estimates using an agreed scientific evaluation protocol.
+- Extend the implemented instrument/batch/calibration metadata with uncertainty, ORCID/ROR, and ontology terms.
+- Validate the implemented nested grouped evaluation and conditional error intervals against an agreed real-data scientific protocol.
 - Independently validate RO-Crate conformance and adopt a community materials metadata profile.
 - Integrate an institutional repository for persistent identifiers and discoverability.
 - Provision a managed storage service with authentication, backups, monitoring, and recovery drills.
